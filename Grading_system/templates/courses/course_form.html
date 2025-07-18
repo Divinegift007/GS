@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header" style="background-color: #0f1729; color: white;">
+            <h4>{% if object %}Edit{% else %}Add New{% endif %} Course</h4>
+        </div>
+        <div class="card-body">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
+                
+                <!-- Code Field -->
+                <div class="mb-3">
+                    <label for="{{ form.code.id_for_label }}" class="form-label">
+                        Course Code
+                        <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" 
+                           name="code" 
+                           class="form-control {% if form.code.errors %}is-invalid{% endif %}" 
+                           id="{{ form.code.id_for_label }}"
+                           value="{{ form.code.value|default:'' }}"
+                           required>
+                    {% if form.code.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.code.errors }}
+                    </div>
+                    {% endif %}
+                    <small class="form-text text-muted">Example: CSC101, MATH201</small>
+                </div>
+                
+                <!-- Title Field -->
+                <div class="mb-3">
+                    <label for="{{ form.title.id_for_label }}" class="form-label">
+                        Course Title
+                        <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" 
+                           name="title" 
+                           class="form-control {% if form.title.errors %}is-invalid{% endif %}" 
+                           id="{{ form.title.id_for_label }}"
+                           value="{{ form.title.value|default:'' }}"
+                           required>
+                    {% if form.title.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.title.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Department Field -->
+                <div class="mb-3">
+                    <label for="{{ form.department.id_for_label }}" class="form-label">
+                        Department
+                        <span class="text-danger">*</span>
+                    </label>
+                    <select name="department" 
+                            class="form-select {% if form.department.errors %}is-invalid{% endif %}" 
+                            id="{{ form.department.id_for_label }}"
+                            required>
+                        <option value="">Select Department</option>
+                        {% for dept in form.department.field.queryset %}
+                            <option value="{{ dept.pk }}" 
+                                    {% if form.department.value == dept.pk %}selected{% endif %}>
+                                {{ dept.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    {% if form.department.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.department.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Credit Hours Field -->
+                <div class="mb-3">
+                    <label for="{{ form.credit_hours.id_for_label }}" class="form-label">
+                        Credit Hours
+                        <span class="text-danger">*</span>
+                    </label>
+                    <input type="number" 
+                           name="credit_hours" 
+                           class="form-control {% if form.credit_hours.errors %}is-invalid{% endif %}" 
+                           id="{{ form.credit_hours.id_for_label }}"
+                           value="{{ form.credit_hours.value|default:'3' }}"
+                           min="1"
+                           max="6"
+                           required>
+                    {% if form.credit_hours.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.credit_hours.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary py-2" style="background-color: #0f1729; border: none;">
+                        {% if object %}Update{% else %}Create{% endif %} Course
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

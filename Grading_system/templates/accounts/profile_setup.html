@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header" style="background-color: #0f1729; color: white;">
+            <h4 class="mb-0">Profile Setup</h4>
+        </div>
+        <div class="card-body">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <label class="form-label">Full Name</label>
+                    {{ form.full_name }}
+                    {% if form.full_name.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.full_name.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Matric Number</label>
+                    {{ form.matric_number }}
+                    {% if form.matric_number.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.matric_number.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Student ID</label>
+                    {{ form.student_id }}
+                    {% if form.student_id.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.student_id.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Department</label>
+                    {{ form.department }}
+                    {% if form.department.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.department.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Admission Date</label>
+                    {{ form.admission_date }}
+                    {% if form.admission_date.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.admission_date.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn" style="background-color: #0f1729; color: white;">
+                        Update Profile
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Course List{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header" style="background-color: #0f1729; color: white;">
+            <h4>All Courses</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Title</th>
+                        <th>Department</th>
+                        <th>Credit Hours</th>
+                        {% if user.is_teacher %}
+                        <th>Actions</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for course in object_list %}
+                    <tr>
+                        <td>{{ course.code }}</td>
+                        <td>{{ course.title }}</td>
+                        <td>{{ course.department.name }}</td>
+                        <td>{{ course.credit_hours }}</td>
+                        {% if user.is_teacher %}
+                        <td>
+                            <a href="{% url 'gradebook' course.id %}" class="btn btn-sm" style="background-color: #0f1729; color: white;">
+                                View Gradebook
+                            </a>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="{% if user.is_teacher %}5{% else %}4{% endif %}" class="text-center">No courses available</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ student.user.get_full_name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">Student Profile</h4>
+        <a href="{% url 'generate-transcript' student.id %}" class="btn btn-sm btn-primary">
+            <i class="bi bi-file-earmark-pdf"></i> Transcript
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="text-center mb-4">
+                    <div class="avatar-placeholder bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" 
+                         style="width: 150px; height: 150px; font-size: 3rem; margin: 0 auto;">
+                        {{ student.user.first_name|first }}{{ student.user.last_name|first }}
+                    </div>
+                </div>
+                <h5 class="text-center">{{ student.user.get_full_name }}</h5>
+                <hr>
+                <p><strong>Student ID:</strong> {{ student.student_id }}</p>
+                <p><strong>Department:</strong> {{ student.department.name }}</p>
+                <p><strong>Admission Date:</strong> {{ student.admission_date|date:"F j, Y" }}</p>
+            </div>
+            <div class="col-md-8">
+                <h5>Academic Record</h5>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Semester</th>
+                                <th>Grade</th>
+                                <th>Credits</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for enrollment in student.enrollment_set.all %}
+                            <tr>
+                                <td>{{ enrollment.course.title }}</td>
+                                <td>{{ enrollment.semester }} {{ enrollment.academic_year }}</td>
+                                <td>
+                                    <span class="badge bg-{% if enrollment.result.grade == 'A' %}success{% elif enrollment.result.grade == 'F' %}danger{% else %}warning{% endif %}">
+                                        {{ enrollment.result.grade|default:"In Progress" }}
+                                    </span>
+                                </td>
+                                <td>{{ enrollment.course.credit_hours }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center">No courses enrolled</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
