@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ course.title }} Gradebook{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4 class="mb-0">Gradebook: {{ course.title }}</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Student</th>
+                        <th class="text-center">Quiz (20%)</th>
+                        <th class="text-center">Test (20%)</th>
+                        <th class="text-center">Exam (60%)</th>
+                        <th class="text-center">Total</th>
+                        <th class="text-center">Grade</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for enrollment in enrollments %}
+                    <tr>
+                        <td>{{ enrollment.student.user.get_full_name }}</td>
+                        <td class="text-center">{{ enrollment.result.quiz|default:"-" }}</td>
+                        <td class="text-center">{{ enrollment.result.test|default:"-" }}</td>
+                        <td class="text-center">{{ enrollment.result.exam|default:"-" }}</td>
+                        <td class="text-center">{{ enrollment.result.total|default:"-" }}</td>
+                        <td class="text-center">
+                            <span class="badge bg-{% if enrollment.result.grade == 'A' %}success{% elif enrollment.result.grade == 'F' %}danger{% else %}warning{% endif %}">
+                                {{ enrollment.result.grade|default:"-" }}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            {% if enrollment.result %}
+                            <a href="{% url 'result-update' enrollment.result.id %}" class="btn btn-sm btn-outline-primary">
+                                Edit
+                            </a>
+                            {% else %}
+                            <span class="text-muted">Not yet graded</span>
+                            {% endif %}
+                        </td>
+                    </tr>   
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

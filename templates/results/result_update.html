@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Result{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-custom text-white">
+            <h4>Update Student Result</h4>
+        </div>
+        <div class="card-body">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                
+                <div class="mb-3">
+                    <label for="id_quiz" class="form-label">Quiz (20%)</label>
+                    {{ form.quiz }}
+                    {% if form.quiz.errors %}
+                        <div class="text-danger">{{ form.quiz.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_test" class="form-label">Test (20%)</label>
+                    {{ form.test }}
+                    {% if form.test.errors %}
+                        <div class="text-danger">{{ form.test.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_exam" class="form-label">Exam (60%)</label>
+                    {{ form.exam }}
+                    {% if form.exam.errors %}
+                        <div class="text-danger">{{ form.exam.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-success">Save Result</button>
+                <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

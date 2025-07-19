@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <div class="card">
+      <div class="card-header" style="background-color: #0f1729; color: white;">
+        <h4 class="mb-0">Student Form</h4>
+      </div>
+      <div class="card-body">
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+              {{ form.non_field_errors }}
+            </div>
+          {% endif %}
+          <div class="mb-3">
+            <label class="form-label">User</label>
+            {{ form.user }}
+            {% if form.user.errors %}
+              <div class="invalid-feedback d-block">
+                {{ form.user.errors }}
+              </div>
+            {% endif %}
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Department</label>
+            {{ form.department }}
+            {% if form.department.errors %}
+              <div class="invalid-feedback d-block">
+                {{ form.department.errors }}
+              </div>
+            {% endif %}
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Level</label>
+            {{ form.level }}
+            {% if form.level.errors %}
+              <div class="invalid-feedback, d-block">
+                {{ form.level.errors }}
+              </div>
+            {% endif %}
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn" style="background-color: #0f1729; color: white;">
+              {% if object %} Update Student {% else %} Create Student {% endif %}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
